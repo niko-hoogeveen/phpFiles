@@ -1,16 +1,20 @@
 <?php
 
 /* Install Documentation 
-    
-- Script relies on mysqli to interact with the MySQL database
 
+- Script relies on mysqli to interact with the MySQL database
 
 */
 
-// first, lets think about what we are going to need to do
-
-
 // 1. parse command line arguments - ensure for proper usage & check CSV file is valid
+// Directives: 
+// create_table: create users table in MySQL - table needs to contain name, surname and email address (unique index)
+// dry_run: run the script but don't INSERT into the db - all other functions executed
+// u: configure MySQL username
+// p: configure MySQL password
+// h: configure MySQL host
+// help: list of directives with details
+
 $options = getopt("f:u:p:h:", ["file:", "create_table", "dry_run", "help"]);
 
 // now must check if help option was supplied
@@ -51,7 +55,6 @@ if ($conn->connect_error) {
 // 3. check for what command line directive was inputted by the user - execution decided by what directive(s) used
 
 // lets do create_table first
-
 if (isset($options["create_table"])) {
     // create the database with name "database"
     $sql = "CREATE DATABASE IF NOT EXISTS  $dbname";
@@ -88,8 +91,8 @@ if (isset($options["create_table"])) {
 }
 
 // Check if --file directive was provided
-if (!(isset($options["file"])) || file_exists($options["file"])) {
-    echo "Error: please provide a valid CSV file using --file [filename] \n";
+if (!(isset($options['file'])) || !(file_exists($options['file']))) {
+    echo "Error: please provide a valid CSV file using --file [filename.csv] \n";
     exit(1);
 }
 
@@ -139,14 +142,5 @@ fclose($file);
 $conn->close();
 
 
-
-
-// Directives: 
-// create_table: create users table in MySQL - table needs to contain name, surname and email address (unique index)
-// dry_run: run the script but don't INSERT into the db - all other functions executed
-// u: configure MySQL username
-// p: configure MySQL password
-// h: configure MySQL host
-// help: list of directives with details
 
 

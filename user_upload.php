@@ -134,6 +134,10 @@ while(($data = fgetcsv($file)) !== false) {
     }
 }
 
+// close file and database connection 
+fclose($file);
+$conn->close();
+
 
 
 

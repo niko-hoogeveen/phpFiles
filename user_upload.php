@@ -100,6 +100,41 @@ if (!$file) {
     exit(1);
 }
 
+// now we can prepare to insert our CSV into the database
+$insertStmt = $conn->prepare("INSERT INTO users (name, surname, email) VALUES (?, ?, ?)");
+
+// Iterate through the file, parsing each name, surname, and email - ensuring each is correctly formatted
+while(($data = fgetcsv($file)) !== false) {
+    // validate CSV row format
+    if (count($data) != 3) {
+        echo "Error: Invalid CSV row format\n";
+        exit(1);
+    }
+
+    $name = ucfirst(strtolower(trim($data[0])));    // trim whitespace, convert whole string to lower case, convert first character to uppercase
+    $surname = ucfirst(strtolower(trim($data[1]))); // same as name
+    $email = strtolower(trim($data[2]));            // set email address to lower case before filtering
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Error: Invalid email format\n";
+        exit(1);
+    }
+
+    // Here, we just need to check if it's a dry_run execution, then insert our CSV information into the DB
+    if (!isset($options['dry_run'])) {
+        $insertStmt->bind_param('sss', $name, $surname, $email);
+        if($insertStmt->execute()) {
+            echo "Record successfully inserted: $name, $surname, $email\n";
+        } else {
+            echo "Error: " . mysqli_error($conn);
+        }
+    } else {
+        echo "Dry run: Record would be inserted: $name, $surname, $email";
+    }
+}
+
+
 
 
 // Directives: 

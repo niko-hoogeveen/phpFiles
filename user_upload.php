@@ -91,7 +91,7 @@ if (isset($options["create_table"])) {
 }
 
 // Check if --file directive was provided
-if (!(isset($options['file'])) || !(file_exists($options['file']))) {
+if (!(isset($options['file']) || file_exists($options['file']))) {
     echo "Error: please provide a valid CSV file using --file [filename.csv] \n";
     exit(1);
 }

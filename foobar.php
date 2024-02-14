@@ -1,5 +1,4 @@
 <?php
-
 // loop through numbers 1 through 100 inclusive
 for ($x = 1; $x <= 100; $x++ ) {
     // first we must check case that $x is divisble by both 3 and 5

@@ -44,7 +44,42 @@ if ($conn->connect_error) {
 
 // 3. check for what command line directive was inputted by the user - execution decided by what directive(s) used
 
-// lets do 
+// lets do create_table first
+
+if (isset($options["create_table"])) {
+    // create the database with name "database"
+    $sql = "CREATE DATABASE IF NOT EXISTS  $dbname";
+    if ($conn->query($sql)) {
+        echo "DB created successfully";
+    } else {
+        echo "Error creating database: ". mysqli_error($conn);
+        exit(1);
+    }
+
+    // use the database we just created (or it already exists, use it)
+    $sql = "USE $dbname";
+    if ($conn->query($sql)) {
+        echo "Database changed successfully";
+    } else {
+        echo "Error changing database: ". mysqli_error($conn);
+        exit(1);
+    }
+
+    // create the table with four columns, id, name, surname, and email (which is unique)
+    $sql = "CREATE TABLE IF NOT EXISTS users (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+            name VARCHAR(30) NOT NULL,
+            surname VARCHAR(30) NOT NULL,
+            email VARCHAR(50) NOT NULL UNIQUE)";
+    if ($conn->query($sql)) {
+        echo "Table 'users' created successfully\n";
+    } else {
+        echo "Error creating 'users' table: ". mysqli_error($conn);
+        exit(1);
+    }
+
+    // exit the program, nothing else needed for create_table version of the script
+    exit(0);
+}
 
 
 // Directives: 

@@ -1,5 +1,11 @@
 <?php
 
+/* Install Documentation 
+    
+- Script relies on mysqli to interact with the MySQL database
+
+
+*/
 
 // first, lets think about what we are going to need to do
 
@@ -80,6 +86,20 @@ if (isset($options["create_table"])) {
     // exit the program, nothing else needed for create_table version of the script
     exit(0);
 }
+
+// Check if --file directive was provided
+if (!(isset($options["file"])) || file_exists($options["file"])) {
+    echo "Error: please provide a valid CSV file using --file [filename] \n";
+    exit(1);
+}
+
+// Open the CSV file for reading
+$file = fopen($options['file'], 'r');
+if (!$file) {
+    echo "Error: Unable to open file. \n";
+    exit(1);
+}
+
 
 
 // Directives: 

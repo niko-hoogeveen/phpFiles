@@ -2,7 +2,9 @@ Install Documentation:
 - Note: I used mysqli for interacting with the database, so ensure that it is installed.
 
 Linux installation commands:
+
 $ sudo apt-get update
+
 $ sudo apt-get install php mysql-server php-mysql
 
 * The mysqli extension is often available by default with PHP. However, the following command will ensure it gets downloaded explicity *
